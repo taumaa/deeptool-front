@@ -1,0 +1,67 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Container from "../layouts/Container.astro";
+import MainHeading from "../components/headings/MainHeading";
+
+const title = "Mentions Légales";
+const url = "https://deeptool.fr/legale";
+const image = "https://deeptool.fr/og.jpg";
+---
+
+<Layout>
+
+    <title slot="head">{title}</title>
+    <meta slot="head" property="og:title" content={title}>
+    <meta slot="head"  name="robots" content="index, follow">
+    <meta slot="head"  name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta slot="head"  name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <link slot="head"  rel="canonical" href={url}>
+    <meta slot="head"  property="og:url" content={url}>
+    <meta slot="head"  property="og:site_name" content="deeptool.fr">
+    <meta slot="head"  property="og:locale" content="fr_FR">
+    <meta slot="head"  property="og:type" content="article">
+    <meta slot="head"  property="og:image" content={image}>
+    <meta slot="head"  property="og:image:secure_url" content={image}>
+    <meta slot="head"  property="og:image:width" content="1280">
+    <meta slot="head"  property="og:image:height" content="720">
+    <meta slot="head"  name="twitter:card" content="summary">
+    <meta slot="head"  name="twitter:title" content={title}>
+    <meta slot="head"  name="twitter:image" content={image}>
+
+
+    <Container>
+    
+        <div class="py-8">
+            <MainHeading text="Mentions Légales" />
+            <div class="post-content">
+                <h2>
+                    Conditions d’utilisation 
+                </h2>
+                <p>
+                    Deeptool.fr met en œuvre tous les moyens dont il dispose, pour assurer une information fiable et une mise à jour fiable de ses sites internet.
+                    Toutefois, des erreurs ou omissions peuvent survenir. L'internaute devra donc s'assurer de l'exactitude des informations auprès de l'administrateur, et signaler toutes modifications du site qu'il jugerait utile.<br><br>
+                    L'administrateur n'est en aucun cas responsable de l'utilisation faite de ces informations, et de tout préjudice direct ou indirect pouvant en découler.
+                </p>
+                <h2>
+                    Cookies
+                </h2>
+                <p>
+                    Le site Deeptool.fr peut-être amené à vous demander l’acceptation des cookies pour des besoins de statistiques et d'affichage.<br><br>
+                    Un cookies est une information déposée sur votre disque dur par le serveur du site que vous visitez.
+                    Il contient plusieurs données qui sont stockées sur votre ordinateur dans un simple fichier texte auquel un serveur accède pour lire et enregistrer des informations.<br><br>
+                    Certaines parties de ce site ne peuvent être fonctionnelles sans l’acceptation de cookies.
+                </p>
+                <h2>
+                    Liens hypertextes
+                </h2>
+                <p>
+                    Le site internet Deeptool.fr peut offrir des liens vers d’autres sites internet ou d’autres ressources disponibles sur Internet.
+                    Deeptool.fr ne dispose d'aucun moyen pour contrôler les sites en connexion avec ses sites internet.<br><br>
+                    Deeptool.fr ne répond pas de la disponibilité de tels sites et sources externes, ni ne la garantit.<br><br>
+                    Il ne peut être tenu pour responsable de tout dommage, de quelque nature que ce soit, résultant du contenu de ces sites ou sources externes, et notamment des informations, produits ou services qu’ils proposent, ou de tout usage qui peut être fait de ces éléments.<br><br>
+                    Les risques liés à cette utilisation incombent pleinement à l'internaute, qui doit se conformer à leurs conditions d'utilisation.
+                </p>
+            </div>
+        </div>
+    </Container>
+</Layout>

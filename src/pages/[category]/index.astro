@@ -1,0 +1,68 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { CATEGORIES_LIST_AS_SLUG, POSTS_PER_PAGE } from "../../const";
+import PostGrid from "../../components/PostGrid";
+import Container from "../../layouts/Container.astro";
+
+import paginationHandler from "../../helpers/paginationHandler";
+
+const {category} = Astro.params;
+if (!category) {
+    return new Response("Not found", {status: 404});
+}
+
+const categoryData = CATEGORIES_LIST_AS_SLUG[category];
+if (!categoryData) {
+    return new Response("Not found", {status: 404});
+}
+
+// Get page for query string
+const pageParam = Astro.url.searchParams.get("page");
+let page = pageParam ? parseInt(pageParam) : 1;
+if (isNaN(page)) {
+    page = 1;
+}
+
+const {posts, hasNextPage, hasPreviousPage, postCount, maxPage} = await paginationHandler(category, page)
+
+
+const title = `Catégorie: ${categoryData.name}`;
+const url = `https://deeptool.fr/categorie/${categoryData.slug}/`;
+const image = `https://deeptool.fr/og.jpg`;
+const excerpt = categoryData.intro;
+
+---
+
+<Layout>
+
+    <title slot="head">{title}</title>
+    <meta slot="head" property="og:title" content={title}>
+    <meta slot="head"  name="description" content={excerpt}>
+    <meta slot="head"  name="robots" content="index, follow">
+    <meta slot="head"  name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta slot="head"  name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <link slot="head"  rel="canonical" href={url}>
+    <meta slot="head"  property="og:url" content={url}>
+    <meta slot="head"  property="og:site_name" content="deeptool.fr">
+    <meta slot="head"  property="og:locale" content="fr_FR">
+    <meta slot="head"  property="og:type" content="article">
+    <meta slot="head"  property="og:description" content={excerpt}>
+    <meta slot="head"  property="og:image" content={image}>
+    <meta slot="head"  property="og:image:secure_url" content={image}>
+    <meta slot="head"  property="og:image:width" content="1280">
+    <meta slot="head"  property="og:image:height" content="720">
+    <meta slot="head"  name="twitter:card" content="summary">
+    <meta slot="head"  name="twitter:title" content={title}>
+    <meta slot="head"  name="twitter:description" content={excerpt}>
+    <meta slot="head"  name="twitter:image" content={image}>
+    
+    <Container>
+        <div class="py-8">
+            <h1 class="text-5xl font-bold font-mulish text-center">{categoryData.name}</h1>
+            <div class="mt-8 text-xl text-gray-400 font-mulish text-center mb-8">{categoryData.intro}</div>
+            {posts && posts.length > 0 && (
+                <PostGrid posts={posts} />
+            )}
+        </div>
+    </Container>
+</Layout>

@@ -1,81 +1,90 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Card from '../components/Card.astro';
+import Container from '../layouts/Container.astro';
+import MainDisplay from '../components/display/MainDisplay';
+import { CATEGORIES_LIST_AS_SLUG } from '../const';
+import getPostsForCategory from '../helpers/api/getPostsForCategory';
+import getPosts from '../helpers/api/getPosts';
+import PostGrid from '../components/PostGrid';
+import Divider from '../components/Divider';
+
+const testCategoryId = CATEGORIES_LIST_AS_SLUG["test"].id;
+const testPostsRes = getPostsForCategory(parseInt(testCategoryId), 7, 1);
+
+const comparatifCategoryId = CATEGORIES_LIST_AS_SLUG["comparatif"].id;
+const comparatifPostsRes = getPostsForCategory(parseInt(comparatifCategoryId), 7, 1);
+
+const formationCategoryId = CATEGORIES_LIST_AS_SLUG["formation"].id;
+const formationPostsRes = getPostsForCategory(parseInt(formationCategoryId), 7, 1);
+
+const latestPostsRes = getPosts("per_page=3");
+
+const [testPosts, comparatifPosts, latestPosts, formationPosts] = await Promise.all([testPostsRes, comparatifPostsRes, latestPostsRes, formationPostsRes]);
+
+const title = "Votre assistant pour comprendre l'IA";
+const excerpt = "Nous vous aidons à prendre le virage de l'intélligence artificielle en comparant les meilleurs outils du moment !";
+const url = "https://deeptool.fr";
+const image = "https://deeptool.fr/og.jpg";
+
 ---
 
 <Layout title="Welcome to Astro.">
-	<main>
-		<h1>Welcome to <span class="text-gradient">Astro</span></h1>
-		<p class="instructions">
-			To get started, open the directory <code>src/pages</code> in your project.<br />
-			<strong>Code Challenge:</strong> Tweak the "Welcome to Astro" message above.
-		</p>
-		<ul role="list" class="link-card-grid">
-			<Card
-				href="https://docs.astro.build/"
-				title="Documentation"
-				body="Learn how Astro works and explore the official API docs."
-			/>
-			<Card
-				href="https://astro.build/integrations/"
-				title="Integrations"
-				body="Supercharge your project with new frameworks and libraries."
-			/>
-			<Card
-				href="https://astro.build/themes/"
-				title="Themes"
-				body="Explore a galaxy of community-built starter themes."
-			/>
-			<Card
-				href="https://astro.build/chat/"
-				title="Community"
-				body="Come say hi to our amazing Discord community. ❤️"
-			/>
-		</ul>
-	</main>
-</Layout>
 
-<style>
-	main {
-		margin: auto;
-		padding: 1.5rem;
-		max-width: 60ch;
-	}
-	h1 {
-		font-size: 3rem;
-		font-weight: 800;
-		margin: 0;
-	}
-	.text-gradient {
-		background-image: var(--accent-gradient);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-size: 400%;
-		background-position: 0%;
-	}
-	.instructions {
-		line-height: 1.6;
-		margin: 1rem 0;
-		border: 1px solid rgba(var(--accent), 25%);
-		background-color: white;
-		padding: 1rem;
-		border-radius: 0.4rem;
-	}
-	.instructions code {
-		font-size: 0.875em;
-		font-weight: bold;
-		background: rgba(var(--accent), 12%);
-		color: rgb(var(--accent));
-		border-radius: 4px;
-		padding: 0.3em 0.45em;
-	}
-	.instructions strong {
-		color: rgb(var(--accent));
-	}
-	.link-card-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
-		gap: 1rem;
-		padding: 0;
-	}
-</style>
+    <title slot="head">{title}</title>
+	<meta slot="head" property="og:title" content={title}>
+    <meta slot="head"  name="description" content={excerpt}>
+    <meta slot="head"  name="robots" content="index, follow">
+    <meta slot="head"  name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta slot="head"  name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <link slot="head"  rel="canonical" href={url}>
+    <meta slot="head"  property="og:url" content={url}>
+    <meta slot="head"  property="og:site_name" content="deeptool.fr">
+    <meta slot="head"  property="og:locale" content="fr_FR">
+    <meta slot="head"  property="og:type" content="article">
+    <meta slot="head"  property="og:description" content={excerpt}>
+    <meta slot="head"  property="og:image" content={image}>
+    <meta slot="head"  property="og:image:secure_url" content={image}>
+    <meta slot="head"  property="og:image:width" content="1280">
+    <meta slot="head"  property="og:image:height" content="720">
+    <meta slot="head"  name="twitter:card" content="summary">
+    <meta slot="head"  name="twitter:title" content={title}>
+    <meta slot="head"  name="twitter:description" content={excerpt}>
+    <meta slot="head"  name="twitter:image" content={image}>
+
+	<Container>
+		<main>
+			{latestPosts && latestPosts.length > 0 && (
+				<MainDisplay
+					posts={latestPosts}
+				/>
+			)}
+			<div>
+				<Divider />
+			</div>
+			{comparatifPosts && comparatifPosts.length > 0 && (
+				<div>
+					<h2 class="text-3xl font-medium font-outfit">Les meilleurs outils IA 🔥</h2>
+					<PostGrid posts={comparatifPosts} />
+				</div>
+			)}
+			<div>
+				<Divider />
+			</div>
+			{testPosts && testPosts.length > 0 && (
+				<div>
+					<h2 class="text-3xl font-medium font-outfit">Nos derniers tests 🤖</h2>
+					<PostGrid posts={testPosts} />
+				</div>
+			)}
+			<div>
+				<Divider />
+			</div>
+			{formationPosts && formationPosts.length > 0 && (
+				<div>
+					<h2 class="text-3xl font-medium font-outfit">Comprendre l'IA 📚</h2>
+					<PostGrid posts={formationPosts} />
+				</div>
+			)}
+		</main>
+	</Container>
+</Layout>

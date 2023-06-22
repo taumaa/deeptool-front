@@ -1,0 +1,150 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import getCategoryFromSlug from '../../helpers/getCategoryFromSlug'
+import getPost from '../../helpers/api/getPost'
+import Container from '../../layouts/Container.astro'
+import extractH2Headings from '../../helpers/extractH2Headings'
+import convertDate from '../../helpers/convertDate'
+import { AUTHOR_DESCRIPTION } from '../../const'
+import parseContent from '../../helpers/parseContent'
+
+const { category, slug } = Astro.params
+
+if (!category || !slug) {
+    return new Response("Not found", {status: 404});
+}
+
+const categoryId = getCategoryFromSlug(category)
+
+if (!categoryId) {
+    return new Response("Not found", {status: 404});
+}
+
+const post = await getPost(slug, categoryId )
+if (!post) {
+    return new Response("Not found", {status: 404});
+}
+
+const parsedContent = parseContent(post.content)
+const headings = extractH2Headings(parsedContent)
+const humanReadableDate = convertDate(post.date)
+
+// Meta
+const title = post.title
+const excerpt = post.excerpt
+const url = `https://deeptool.fr/${post.category.slug}/${slug}/`
+const featuredImage = post.featuredImage
+
+---
+
+<Layout>
+
+  <title slot="head">{title}</title>
+  <meta slot="head" property="og:title" content={title}>
+  <meta slot="head"  name="description" content={excerpt}>
+  <meta slot="head"  name="robots" content="index, follow">
+  <meta slot="head"  name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta slot="head"  name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <link slot="head"  rel="canonical" href={url}>
+  <meta slot="head"  property="og:url" content={url}>
+  <meta slot="head"  property="og:site_name" content="deeptool.fr">
+  <meta slot="head"  property="og:locale" content="fr_FR">
+  <meta slot="head"  property="og:type" content="article">
+  <meta slot="head"  property="og:description" content={excerpt}>
+  <meta slot="head"  property="og:image" content={featuredImage.full}>
+  <meta slot="head"  property="og:image:secure_url" content={featuredImage.full}>
+  <meta slot="head"  property="og:image:width" content="1280">
+  <meta slot="head"  property="og:image:height" content="720">
+  <meta slot="head"  name="twitter:card" content="summary">
+  <meta slot="head"  name="twitter:title" content={title}>
+  <meta slot="head"  name="twitter:description" content={excerpt}>
+  <meta slot="head"  name="twitter:image" content={featuredImage.full}>
+
+
+  <Container>
+
+
+
+
+    <div>
+
+      <div class="grid grid-cols-12 gap-8">
+        <div class="col-span-2 h-max sticky top-10 top-0 mt-4">
+          <span class="uppercase font-outfit">Sommaire</span>
+          <div class="flex flex-col space-y-2 pt-4 table-of-content">
+            {headings && headings.map((heading) => (
+              <a class="text-sm font-outfit text-slate-400 hover:text-gray-800 transition duration-100" href={`#${heading.id}`}>{heading.text}</a>
+            ))}
+          </div>
+        </div>
+
+
+        <div class="col-span-8 space-y-8">
+
+          <h1 class="mb-8">
+            {post.title}
+          </h1>
+          <div class="mb-8 flex flex-row space-x-4">
+    
+            <div>
+              <div class="h-12 w-12 rounded-full">
+                <img src="/profilepic_small.jpeg" class="rounded-full" />
+              </div>
+            </div>
+            <div class="flex flex-col space-y-1 justify-center text-sm text-gray-400 font-outfit">
+              <div>Ecrit le <span class="text-black">{humanReadableDate}</span></div>
+              <div>Par <span class="text-black">Thomas</span></div>
+            </div>
+    
+          </div>
+
+          <div>
+            <img src={post.featuredImage.full} alt="" class="w-full rounded-xl" />
+          </div>
+
+          <div class="post-content px-4" set:html={parsedContent}></div>
+          
+          <div class="mt-8 py-6 border-y flex flex-row space-x-8 items-center">
+            <div class="contents">
+              <img src="/profilepic.jpeg" class="rounded-full h-24 w-24" />
+            </div>
+            <div class="flex flex-col space-y-2">
+              <div class="text-sm font-outfit text-gray-400">A propos de l'auteur</div>
+              <div class="font-outfit font-semibold text-gray-800">Thomas</div>
+              <div class="text-sm font-outfit text-gray-600 italic">{AUTHOR_DESCRIPTION}</div>
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="col-span-2">
+          
+        </div>
+
+      </div>
+
+    </div>
+  </Container>
+</Layout>
+
+<script>
+  // Attachez un événement click à tous les liens dans le sommaire
+  document.querySelectorAll('.table-of-content a').forEach((link) => {
+    link.addEventListener('click', function(this: any, e: any) {
+      // Empêchez le comportement de défilement par défaut
+      e.preventDefault();
+
+      // Trouvez l'élément cible à défiler vers
+      let target = document.querySelector(this.getAttribute('href'));
+
+      // Animer le défilement vers l'élément cible
+      target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+
+<style is:global>
+
+
+</style>

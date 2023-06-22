@@ -1,0 +1,36 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Container from "../layouts/Container.astro";
+import MainHeading from "../components/headings/MainHeading";
+
+const title = "Contact";
+const url = "https://deeptool.fr/contact";
+const image = "https://deeptool.fr/og.jpg";
+
+---
+
+<Layout>
+    
+    <title slot="head">{title}</title>
+    <meta slot="head" property="og:title" content={title}>
+    <meta slot="head"  name="robots" content="index, follow">
+    <meta slot="head"  name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta slot="head"  name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <link slot="head"  rel="canonical" href={url}>
+    <meta slot="head"  property="og:url" content={url}>
+    <meta slot="head"  property="og:site_name" content="deeptool.fr">
+    <meta slot="head"  property="og:locale" content="fr_FR">
+    <meta slot="head"  property="og:type" content="article">
+    <meta slot="head"  property="og:image" content={image}>
+    <meta slot="head"  property="og:image:secure_url" content={image}>
+    <meta slot="head"  property="og:image:width" content="1280">
+    <meta slot="head"  property="og:image:height" content="720">
+    <meta slot="head"  name="twitter:card" content="summary">
+    <meta slot="head"  name="twitter:title" content={title}>
+    <meta slot="head"  name="twitter:image" content={image}>
+
+    <Container>
+        <MainHeading text="Contact" />
+        <p>Merci d'envoyer un mail à contact@deeptool.fr</p>
+    </Container>
+</Layout>
