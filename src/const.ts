@@ -1,4 +1,4 @@
-export const WP_URL = "https://deeptool-wordpress.caprover.totocorp.fr"
+export const WP_URL = "https://wp.deeptool.fr"
 
 export const CATEGORIES_LIST: { [key: string]: { name: string, slug: string, intro: string } }  = {
     "2": {
