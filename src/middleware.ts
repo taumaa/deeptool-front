@@ -2,8 +2,6 @@ import { defineMiddleware } from "astro/middleware";
 
 export const onRequest = defineMiddleware(async ({ request }, next) => {
 
-    console.log(request.url)
-
     if (request.url.endsWith('/sitemap.xml')) {
         // Continue to the next middleware or route handler
         return next();
