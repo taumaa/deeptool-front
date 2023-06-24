@@ -15,7 +15,7 @@ async function fetchSlugs(): Promise<Slug[]> {
 // Fonction pour générer une entrée de sitemap pour un slug
 function generateSitemapEntry(slug: Slug): string {
   return `<url>
-      <loc>https://deeptool.fr${slug}/</loc>
+      <loc>https://deeptool.fr${slug}</loc>
     </url>`;
 }
 
