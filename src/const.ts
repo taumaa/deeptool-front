@@ -7,7 +7,7 @@ export const CATEGORIES_LIST: { [key: string]: { name: string, slug: string, int
         "intro": "Découvez ici les dernières actualités du monde de l'IA",
     },
     "6": {
-        "name": "Comparatif",
+        "name": "Comparatifs",
         "slug": "comparatif",
         "intro": "Nous comparons pour vous des dizaines de produits et services à base d'IA",
     },
@@ -23,7 +23,7 @@ export const CATEGORIES_LIST: { [key: string]: { name: string, slug: string, int
     }
     ,
     "5": {
-        "name": "Formation",
+        "name": "Formations",
         "slug": "formation",
         "intro": "Comprenez l'IA et apprenez à l'utiliser dans votre quotidien",
     }
